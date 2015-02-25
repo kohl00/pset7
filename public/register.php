@@ -9,14 +9,16 @@
     else if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         //TODO
-        if((empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["confirmation"])) || ($_POST["password"] !== $_POST["confirmation"]))
+        if((empty($_POST["username"]) || empty($_POST["password"]) || empty($_POST["confirmation"]) || empty($_POST["email"])) || ($_POST["password"] !== $_POST["confirmation"]))
         {
           apologize("Something went wrong during save. Try again.");
         }else{
-            $result = query("INSERT INTO users (username,hash,cash) VALUES(?,?,10000.00)",$_POST["username"],crypt($_POST["password"]));
+            $result = query("INSERT INTO `users`(`username`, `hash`, `cash`, `email`) VALUES ((?),(?),10000.00,(?))",$_POST["username"],crypt($_POST["password"]),$_POST["email"]);
             if($result === false){
               apologize("Couldn't be saved to database");
             }else
+              $msg = "Thanks for signing up for our service!";
+              mail($_POST["email"],"Thanks for signing up",$msg);
               $rows = query("SELECT LAST_INSERT_ID() AS id");
               $id = $rows[0]["id"];
               $_SESSION["id"] = $id;  
