@@ -1,4 +1,4 @@
-<div class = "nav nav-pills">
+<div style="padding-left: 200px" class = "nav nav-pills">
     <li>
         <a href="quote.php">Quote</a>
     </li>
